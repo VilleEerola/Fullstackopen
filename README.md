@@ -1,1 +1,1 @@
-Answers and commit for the Fullstackopen course
+Answers and commits for the Fullstackopen course
