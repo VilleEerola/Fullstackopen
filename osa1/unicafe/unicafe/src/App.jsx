@@ -10,14 +10,6 @@ const Header = (props) => {
   )
 }
 
-const Header2 = (props) => {
-  console.log(props)
-  return (
-    <div>
-      <p style = {{fontWeight: "bold", fontSize: 50, textAlign: 'center' }}>{props.header2}</p>
-    </div>
-  )
-}
 
 const Button = (props) => {
   console.log(props)
@@ -33,39 +25,45 @@ const Button = (props) => {
 }
 
 const Statistics = (props) => {
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
-
- 
-  const all = (good + neutral + bad)
-  const average = (good*1 + neutral*0 + bad*(-1)) / all
-  const positive = ((good / all) * 100)
-
-  const feedbackGiven = all > 0;
+  
   console.log(props)
   return (
-    <div>
-    {feedbackGiven ? (
-      <>
-        <Statistics text = "Good" stats = {good}/>
-        <Statistics text = "Neutral" stats = {neutral}/>
-        <Statistics text = "Bad" stats = {bad}/>
-        <Statistics text = "All" stats = {all}/>
-        <Statistics text = "Average" stats = {average}/>
-        <Statistics text = "Positive %" stats = {positive}/>
-      </>
-    ):(
-      <p style={{textAlign: "center"}}>No Feedback Given</p>
-    )}
-    </div>
+      <table>
+        <StatisticsLine text1 = "Good" stats1 = {props.good}/>
+        <StatisticsLine text2 = "Neutral" stats2 = {props.neutral}/>
+        <StatisticsLine text3 = "Bad" stats3 = {props.bad}/>
+        <StatisticsLine text4 = "All" stats4 = {props.all}/>
+        <StatisticsLine text5 = "Average" stats5 = {props.average}/>
+        <StatisticsLine text6 = "Positive %" stats6 = {props.positive}/>
+
+        </table>
+      
   )
 }
 
 const StatisticsLine = (props) => {
   console.log(props)
   return (
-    <p style={{textAlign:"center"}}>{props.text} {props.stats}</p>
+    <tbody>
+      <tr>
+      <th>{props.text1} {props.stats1}</th>
+      </tr>
+      <tr>
+      <th>{props.text2} {props.stats2}</th>
+      </tr>
+      <tr>
+      <th>{props.text3} {props.stats3}</th>
+      </tr>
+      <tr>
+      <th>{props.text4} {props.stats4}</th>
+      </tr>
+      <tr>
+      <th>{props.text5} {props.stats5}</th>
+      </tr>
+      <tr>
+      <th>{props.text6} {props.stats6}</th>
+      </tr>
+    </tbody>
   )
 }
 
@@ -93,6 +91,12 @@ const App = () => {
     console.log('bad now', newValue)
     setBad(newValue)
   }
+
+  const all = (good + neutral + bad)
+  const average = (good*1 + neutral*0 + bad*(-1)) / all
+  const positive = ((good / all) * 100)
+
+  const feedbackGiven = all > 0
   
   return (
     <div>
@@ -102,8 +106,17 @@ const App = () => {
       <Button handleClick = {() => setToNeutral(neutral + 1)} text="Neutral"/>
       <Button handleClick = {() => setToBad(bad + 1)} text="Bad"/>
 
-      <Header2 header2 = {header2}/>
-        <Statistics />
+      <Header header = {header2}/>
+      
+      {feedbackGiven ? (
+        <>
+          <Statistics good = {good} neutral = {neutral} bad = {bad} all = {all}
+          average = {average} positive = {positive}/>
+        </>
+      ) : (
+        <p style={{ textAlign: "center" }}>No feedback given</p>
+      )}
+      
     </div>
   )
 }
