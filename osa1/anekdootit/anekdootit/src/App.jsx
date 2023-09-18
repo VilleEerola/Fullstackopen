@@ -1,5 +1,12 @@
 import { useState } from 'react'
 
+
+const Header = (props) => {
+  console.log(props)
+  return(
+  <p style = {{fontWeight: "bold", fontSize: 30}}>{props.header}</p>
+  )
+}
 const Button = (props) => {
   console.log(props)
   return(
@@ -24,7 +31,12 @@ const Random = (min, max) => {
   )
 }
 
+
 const App = () => {
+  const header = "Anecdote of the day"
+  const header2 = "Anecdote with most votes"
+
+
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -36,16 +48,29 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
-
-   
   const [selected, setSelected] = useState(0)
 
+  
+
+  const [votes, setVotes] = useState(new Uint32Array(anecdotes.length))
+  const handleVotes = () => {
+    const points = [...votes]
+    points[selected] += 1
+    setVotes(points)
+  }
+  const mostVotes = Math.max(...votes)
+  const mostVotesAnecdote = votes.indexOf(mostVotes)
+  
   return (
     <div>
+      <Header header = {header}/>
       {anecdotes[selected]}
+      <p>Has {votes[selected]} votes</p>
       <Button handleClick = {() => setSelected(Random(0 , 7))} text="Next Anecdote" 
-       text2 = "Vote Anecdote" />
-
+      handleClick2 = {handleVotes} text2 = "Vote This Anecdote" />
+      <Header header = {header2}/>
+      {anecdotes[mostVotesAnecdote]}
+      <p>Has {mostVotes} votes</p>
     </div>
   )
 }
