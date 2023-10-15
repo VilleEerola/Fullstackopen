@@ -3,6 +3,7 @@ import personService from './services/person'
 import Filter from './Components/Filter'
 import PersonForm from './Components/PersonForm'
 import Persons from './Components/Persons'
+import Alert from './Components/Alert'
 
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
    const [newName, setNewName] = useState("")
    const [newNumber, setNewNumber] = useState("")
    const [filter, setFilter] = useState("")
+   const [alertMessage, setAlertMessage] = useState(null)
 
 
   // gets the data from the server, uses person.js
@@ -28,11 +30,33 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {name: newName, number: newNumber}
+    const existingPerson = persons.find((person) => person.name === newName)
     // adds new person and/or number, if already added, gives alert
     
-  if (persons.some((person)=> person.name === newName)){
-    alert(`${newName} is already added to phonebook`)
-  } else {
+  if (persons.some((person)=> person.name === newName && person.number === newNumber)){
+    alert(`${newName} ${newNumber} is already added to phonebook`)
+
+  } else if (existingPerson){
+
+      if(window.confirm(`${newName} is already added to phonebook,
+      do you want to replace the old number?`)) {
+        const updatedPerson = { ...existingPerson, number: newNumber }
+        personService
+        .update(existingPerson.id, updatedPerson)
+        .then((response) => {
+          setPersons(persons.map((person) =>(person.id !== existingPerson.id ? person : response.data)))
+        })
+        .catch
+      setAlertMessage(
+        `Updated ${newName}'s number`
+      )
+      setTimeout(() => {
+        setAlertMessage(null)
+      }, 5000)
+
+    }
+
+  }else {
     personService
       .create(personObject)
       .then(response => {
@@ -40,6 +64,14 @@ const App = () => {
         setNewName("")
         setNewNumber("")
       })
+      .catch
+      setAlertMessage(
+        `Added ${newName}`
+      )
+      setTimeout(() => {
+        setAlertMessage(null)
+      }, 5000)
+      
   }
 
   }
@@ -58,6 +90,14 @@ const App = () => {
   const removePerson = (id) => {
     const updatedPersons = persons.filter((person) => person.id !== id)
     setPersons(updatedPersons)
+    personService
+    .catch
+      setAlertMessage(
+        `Remove succesful!`
+      )
+      setTimeout(() => {
+        setAlertMessage(null)
+      }, 5000)
   }
 
   
@@ -75,6 +115,9 @@ const App = () => {
         handlePersonChange={handlePersonChange}
         handleNumberChange={handleNumberChange}/>
 
+        <br></br>
+
+      <Alert message={alertMessage}/>
       <h2>Numbers</h2>
 
       <Persons persons={persons} filter={filter} 

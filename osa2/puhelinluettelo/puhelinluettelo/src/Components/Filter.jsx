@@ -3,7 +3,7 @@
 const Filter = ({filter, setFilter}) => {
     return (
         <div>
-        Filter shown with <input value = {filter} 
+        Filter shown with name <input value = {filter} 
           onChange={(e) => setFilter(e.target.value)}/>
         </div>
     )

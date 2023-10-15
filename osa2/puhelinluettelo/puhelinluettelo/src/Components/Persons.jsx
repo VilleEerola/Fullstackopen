@@ -1,13 +1,14 @@
 import axios from 'axios'
+
 const Persons = ({persons, filter, handleRemovePerson}) => {
   //communicates with filter and prints names/numbers on the screen
   // also handles person removing
   const handleRemoveClick = (id) => {
-    if(window.confirm(`Do you really want delete this one?`)){
+    if(window.confirm(`Do you really want remove this one?`)){
     axios
       .delete(`http://localhost:3001/persons/${id}`)
       .then(() => {
-        handleRemovePerson(id);
+        handleRemovePerson(id)
       })}
     }
   
