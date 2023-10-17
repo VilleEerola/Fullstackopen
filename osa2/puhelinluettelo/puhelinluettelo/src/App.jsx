@@ -4,6 +4,7 @@ import Filter from './Components/Filter'
 import PersonForm from './Components/PersonForm'
 import Persons from './Components/Persons'
 import Alert from './Components/Alert'
+import Error from './Components/Error'
 
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
    const [newNumber, setNewNumber] = useState("")
    const [filter, setFilter] = useState("")
    const [alertMessage, setAlertMessage] = useState(null)
+   const [errorMessage, setErrorMessage] = useState(null)
 
 
   // gets the data from the server, uses person.js
@@ -45,15 +47,19 @@ const App = () => {
         .update(existingPerson.id, updatedPerson)
         .then((response) => {
           setPersons(persons.map((person) =>(person.id !== existingPerson.id ? person : response.data)))
+          setAlertMessage(
+            `Updated ${newName}'s number`
+          )
+          setTimeout(() => {
+            setAlertMessage(null)
+          }, 5000)
         })
-        .catch
-      setAlertMessage(
-        `Updated ${newName}'s number`
-      )
-      setTimeout(() => {
-        setAlertMessage(null)
-      }, 5000)
-
+        .catch((error) => {
+          setErrorMessage(`${newName} was already removed from the server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
 
   }else {
@@ -118,6 +124,7 @@ const App = () => {
         <br></br>
 
       <Alert message={alertMessage}/>
+      <Error message={errorMessage}/>
       <h2>Numbers</h2>
 
       <Persons persons={persons} filter={filter} 

@@ -1,15 +1,15 @@
 import "./alert.css"
-const Alert = ({ message }) => {
+const Error = ({ message }) => {
     if (message === null) {
       return null
     }
   
     return (
-      <div className="alert">
+      <div className="error">
         {message}
       </div>
     )
   }
 
 
-  export default Alert
+  export default Error
