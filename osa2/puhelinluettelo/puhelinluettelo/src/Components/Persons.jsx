@@ -6,7 +6,7 @@ const Persons = ({persons, filter, handleRemovePerson}) => {
   const handleRemoveClick = (id) => {
     if(window.confirm(`Do you really want remove this one?`)){
     axios
-      .delete(`http://localhost:3001/persons/${id}`)
+      .delete(`http://localhost:3001/api/persons/${id}`)
       .then(() => {
         handleRemovePerson(id)
       })}

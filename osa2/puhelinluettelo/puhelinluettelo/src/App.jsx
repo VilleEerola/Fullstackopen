@@ -35,10 +35,17 @@ const App = () => {
     const existingPerson = persons.find((person) => person.name === newName)
     // adds new person and/or number, if already added, gives alert
     
+    
   if (persons.some((person)=> person.name === newName && person.number === newNumber)){
     alert(`${newName} ${newNumber} is already added to phonebook`)
 
-  } else if (existingPerson){
+  }else if (!newName) {
+    alert('Name is missing')
+
+  }else if (!newNumber) {
+    alert('Number is missing')
+
+  }else if (existingPerson){
 
       if(window.confirm(`${newName} is already added to phonebook,
       do you want to replace the old number?`)) {
@@ -60,8 +67,7 @@ const App = () => {
             setErrorMessage(null)
           }, 5000)
         })
-    }
-
+      }
   }else {
     personService
       .create(personObject)
